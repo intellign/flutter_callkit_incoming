@@ -49,6 +49,12 @@ class FlutterCallkitIncoming {
     await _channel.invokeMethod("showMissCallNotification", params.toJson());
   }
 
+  /// Hide notification call for Android.
+  /// Only Android
+  static Future hideCallkitIncoming(CallKitParams params) async {
+    await _channel.invokeMethod("hideCallkitIncoming", params.toJson());
+  }
+
   /// Start an Outgoing call.
   /// On iOS, using Callkit(create a history into the Phone app).
   /// On Android, Nothing(only callback event listener).
@@ -111,10 +117,26 @@ class FlutterCallkitIncoming {
     return await _channel.invokeMethod("getDevicePushTokenVoIP");
   }
 
+  /// Silence CallKit events
+  static Future silenceEvents() async {
+    return await _channel.invokeMethod("silenceEvents", true);
+  }
+
+  /// Unsilence CallKit events
+  static Future unsilenceEvents() async {
+    return await _channel.invokeMethod("silenceEvents", false);
+  }
+
   /// Request permisstion show notification for Android(13)
   /// Only Android: show request permission post notification for Android 13+
   static Future requestNotificationPermission(dynamic data) async {
     return await _channel.invokeMethod("requestNotificationPermission", data);
+  }
+
+  /// Request permisstion show notification for Android(14)+
+  /// Only Android: show request permission for ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT
+  static Future requestFullIntentPermission() async {
+    return await _channel.invokeMethod("requestFullIntentPermission");
   }
 
   static CallEvent? _receiveCallEvent(dynamic data) {
